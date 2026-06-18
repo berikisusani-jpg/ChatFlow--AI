@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+
+  --color-brand-primary: #00FF9C;
+  --color-brand-secondary: #00D1FF;
+  --color-brand-accent: #7000FF;
+  --color-bg-dark: #050505;
+  --color-surface-dark: #0C0C0E;
+  --color-surface-elevated: #141416;
+  --color-border-subtle: rgba(255, 255, 255, 0.04);
+  --color-border-muted: rgba(255, 255, 255, 0.08);
+}
+
+@layer base {
+  body {
+    @apply bg-bg-dark text-white font-sans antialiased selection:bg-brand-primary/20 selection:text-brand-primary;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/5;
+  }
+
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-3xl border border-white/[0.05];
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-white to-white/40;
+  }
+
+  .text-gradient-brand {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent;
+  }
+
+  .glow-primary {
+    filter: drop-shadow(0 0 20px rgba(0, 255, 156, 0.2));
+  }
+
+  .glow-card {
+    box-shadow: 0 0 80px -20px rgba(0, 0, 0, 0.5);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .premium-blur {
+    backdrop-filter: blur(40px) saturate(180%);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
