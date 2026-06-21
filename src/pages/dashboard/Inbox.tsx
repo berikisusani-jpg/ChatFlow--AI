@@ -1,8 +1,9 @@
-import { Search, Send, Bot, Sparkles, User, Info, CheckCheck, MoreVertical, X, Phone, Video, ChevronLeft } from 'lucide-react';
+import { Search, Send, Bot, Sparkles, User, Info, CheckCheck, MoreVertical, X, Phone, Video, ChevronLeft, Lightbulb } from 'lucide-react';
 import { useState, useRef, useEffect, useMemo, FormEvent } from 'react';
 import { cn } from '@/src/lib/utils';
-import { generateAIResponse } from '@/src/services/geminiService';
+import { generateAIResponse, generateSuggestions, generateConversationSummary, analyzeLeadPotential } from '@/src/services/geminiService';
 import { motion, AnimatePresence } from 'motion/react';
+import { useNotifications } from '@/src/context/NotificationContext';
 
 interface Message {
   id: number;
@@ -48,6 +49,7 @@ const INITIAL_CHATS: Chat[] = [
 ];
 
 export default function Inbox() {
+  const { addNotification } = useNotifications();
   const [chats, setChats] = useState<Chat[]>(INITIAL_CHATS);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null); // Start null on mobile for list view
   const [isMobileView, setIsMobileView] = useState(false);
@@ -78,6 +80,9 @@ export default function Inbox() {
   const [isTyping, setIsTyping] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showProfile, setShowProfile] = useState(false); // Hidden by default on mobile
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [intelligence, setIntelligence] = useState<any>(null);
+  const [leadAnalysis, setLeadAnalysis] = useState<any>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Responsive check
@@ -163,15 +168,36 @@ export default function Inbox() {
 
       setIsTyping(false);
       if (selectedChat) {
+        const aiMessage: Message = {
+          id: Date.now() + 1,
+          text: aiResponse,
+          type: 'ai',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+
+        const updatedMessages = [...(allMessages[selectedChat.id] || []), aiMessage];
+
         setAllMessages(prev => ({
           ...prev,
-          [selectedChat.id]: [...(prev[selectedChat.id] || []), {
-            id: Date.now() + 1,
-            text: aiResponse,
-            type: 'ai',
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-          }]
+          [selectedChat.id]: updatedMessages
         }));
+
+        addNotification('ai', 'Response Generated', `Agent replied to ${selectedChat.name}`);
+
+        // Async Intelligence tasks
+        const history = updatedMessages.map(m => ({
+          role: m.type === 'user' ? 'user' as const : 'model' as const,
+          parts: [{ text: m.text }]
+        }));
+
+        generateSuggestions(aiResponse).then(setSuggestions);
+        generateConversationSummary(history).then(setIntelligence);
+        analyzeLeadPotential(history).then(analysis => {
+          setLeadAnalysis(analysis);
+          if (analysis.intent === 'Hot' && analysis.score > 80) {
+            addNotification('lead', 'High Potential Lead', `${selectedChat.name} shows strong buying intent!`);
+          }
+        });
       }
     } catch (err) {
       setIsTyping(false);
@@ -315,7 +341,35 @@ export default function Inbox() {
               )}
             </div>
 
-            <div className="p-4 lg:p-8 pt-0">
+            <div className="p-4 lg:p-8 pt-0 space-y-4">
+              <AnimatePresence>
+                {suggestions.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="flex flex-wrap gap-2"
+                  >
+                    <div className="flex items-center gap-2 mr-2 text-brand-primary">
+                      <Lightbulb className="w-3.5 h-3.5" />
+                      <span className="text-[10px] font-black uppercase tracking-widest">Suggestions</span>
+                    </div>
+                    {suggestions.map((s, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setInputValue(s);
+                          setSuggestions([]);
+                        }}
+                        className="px-4 py-1.5 rounded-full bg-white/5 border border-white/5 text-[11px] font-medium text-white/60 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all"
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <form onSubmit={handleSend} className="relative group">
                 <input
                   type="text"
@@ -366,7 +420,31 @@ export default function Inbox() {
               <p className="text-xs text-white/40 font-medium italic">Verified WhatsApp User</p>
             </div>
 
-            <div className="px-8 space-y-8 flex-1 overflow-y-auto pb-10">
+            <div className="px-8 space-y-8 flex-1 overflow-y-auto pb-10 custom-scrollbar">
+              {intelligence && (
+                <div className="space-y-4">
+                  <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">AI Intelligence</span>
+                  <div className="p-4 rounded-2xl bg-brand-primary/5 border border-brand-primary/10 space-y-4">
+                    <div>
+                      <div className="text-[9px] font-black text-brand-primary uppercase tracking-widest mb-1">Summary</div>
+                      <p className="text-xs text-white/70 leading-relaxed font-medium italic">"{intelligence.summary}"</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-[9px] font-black text-brand-primary uppercase tracking-widest mb-1">Intent</div>
+                        <div className="text-xs text-white font-bold">{intelligence.intent}</div>
+                      </div>
+                      {leadAnalysis && (
+                        <div>
+                          <div className="text-[9px] font-black text-brand-primary uppercase tracking-widest mb-1">Lead Score</div>
+                          <div className="text-xs text-white font-bold">{leadAnalysis.score}/100</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-4">
                 <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Customer Information</span>
                 <div className="space-y-4 text-[13px]">
