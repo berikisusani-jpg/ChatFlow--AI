@@ -1,0 +1,19 @@
+
+> react-example@0.0.0 dev
+> vite --port=3000 --host=0.0.0.0
+
+Port 3000 is in use, trying another one...
+Port 3001 is in use, trying another one...
+Port 3002 is in use, trying another one...
+
+  VITE v6.4.2  ready in 384 ms
+
+  ➜  Local:   http://localhost:30032:54:47 AM [vite] changed tsconfig file detected: /app/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+2:54:47 AM [vite] vite.config.ts changed, restarting server...
+2:54:47 AM [vite] (client) page reload inde2:54:472:54:47 AM [vite] (client) page reload inde2:54:47 AM [vite] (client) page reload index.html
+2:54:47 AM [vite] changed tsconfig file detected: /app/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+2:54:47 AM [vite] vi2:54:47 AM [vite] changed tsconfig file detected: /app/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+2:54:48 AM [vite] server restarted.
+3:00:51 AM [vite] changed tsconfig file detected: /app/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+3:07:17 AM [vite] changed tsconfig file det3:07:17 AM [vite] changed tsconfig file detected: /app/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScri3:08:20 AM [vite] changed tsconfig file det3:08:20 AM [vite] changed tsconfig file detected: /app/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScri3:08:20 AM [vite] changed tsconfig file detected: /app/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+3:09:15 AM [vite] changed tsconfig file det3:09:15 AM [vite] changed tsconfig file detected: /app/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.

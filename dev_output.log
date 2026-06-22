@@ -1,0 +1,89 @@
+
+> react-example@0.0.0 dev
+> vite --port=3000 --host=0.0.0.0
+
+12:35:31 AM [vite] (client) Re-optimizing dependencies because lockfile has changed
+
+  VITE v6.4.2  ready in 974 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: http://192.168.0.2:3000/
+12:39:12 AM [vite] (client) hmr update /src/pages/dashboard/CreativeStudio.tsx, /src/index.css
+12:42:59 AM [vite] (client) hmr update /src/components/dashboard/LayoutElements.tsx, /src/index.css
+2:54:47 AM [vite] changed tsconfig file detected: /app/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+2:54:47 AM [vite] vite.config.ts changed, restarting server...
+2:54:47 AM [vite] (client) page reload index.html
+2:54:47 AM [vite] (client) page reload metadata.json
+2:54:47 AM [vite] (client) page reload package.json
+2:54:47 AM [vite] (client) hmr update /src/App.tsx
+2:54:47 AM [vite] (client) hmr update /src/index.css
+2:54:47 AM [vite] (client) page reload src/main.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/CTA.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/Features.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/Footer.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/Hero.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/LiveDemo.tsx
+2:54:47 AM [vite] (client) page reload src/components/LogoMarquee.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/Navbar.tsx
+2:54:47 AM [vite] (client) page reload src/components/Pricing.tsx
+2:54:47 AM [vite] (client) page reload src/components/Testimonials.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/dashboard/BusinessProfile.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/dashboard/FAQPanel.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/dashboard/LayoutElements.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/dashboard/LiveActivityFeed.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/layout/DashboardLayout.tsx
+2:54:47 AM [vite] (client) page reload src/constants/demoData.ts
+2:54:47 AM [vite] (client) hmr update /src/context/NotificationContext.tsx
+2:54:47 AM [vite] (client) page reload src/lib/utils.ts
+2:54:47 AM [vite] (client) hmr update /src/pages/LandingPage.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/CreativeStudio.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Deploy.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Inbox.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Overview.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Profile.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Training.tsx
+2:54:47 AM [vite] (client) page reload src/services/geminiService.ts
+2:54:47 AM [vite] (client) page reload src/services/glmService.ts
+2:54:47 AM [vite] (client) page reload tsconfig.json
+2:54:47 AM [vite] (client) hmr update /src/App.tsx
+2:54:47 AM [vite] (client) hmr update /src/index.css
+2:54:47 AM [vite] (client) page reload src/main.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/CTA.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/Features.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/Footer.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/LiveDemo.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/Hero.tsx
+2:54:47 AM [vite] (client) page reload src/components/LogoMarquee.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/Navbar.tsx
+2:54:47 AM [vite] (client) page reload src/components/Pricing.tsx
+2:54:47 AM [vite] (client) page reload src/components/Testimonials.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/dashboard/BusinessProfile.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/dashboard/FAQPanel.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/dashboard/LayoutElements.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/dashboard/LiveActivityFeed.tsx
+2:54:47 AM [vite] (client) hmr update /src/components/layout/DashboardLayout.tsx
+2:54:47 AM [vite] (client) page reload src/constants/demoData.ts
+2:54:47 AM [vite] (client) hmr update /src/context/NotificationContext.tsx
+2:54:47 AM [vite] (client) page reload src/lib/utils.ts
+2:54:47 AM [vite] (client) hmr update /src/pages/LandingPage.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/CreativeStudio.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Deploy.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Inbox.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Overview.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Profile.tsx
+2:54:47 AM [vite] (client) hmr update /src/pages/dashboard/Training.tsx
+2:54:47 AM [vite] (client) page reload src/services/geminiService.ts
+2:54:47 AM [vite] (client) page reload src/services/glmService.ts
+2:54:47 AM [vite] (client) page reload index.html
+2:54:47 AM [vite] (client) page reload metadata.json
+2:54:47 AM [vite] (client) page reload package.json
+2:54:47 AM [vite] changed tsconfig file detected: /app/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+2:54:47 AM [vite] (client) page reload tsconfig.json
+2:54:47 AM [vite] vite.config.ts changed, restarting server...
+2:54:47 AM [vite] changed tsconfig file detected: /app/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+2:54:48 AM [vite] server restarted.
+3:00:51 AM [vite] changed tsconfig file detected: /app/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+3:07:17 AM [vite] changed tsconfig file detected: /app/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+3:08:20 AM [vite] changed tsconfig file detected: /app/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+3:08:20 AM [vite] changed tsconfig file detected: /app/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+3:09:15 AM [vite] changed tsconfig file detected: /app/backend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.

@@ -1,8 +1,25 @@
-node_modules/
-build/
-dist/
-coverage/
-.DS_Store
-*.log
-.env*
-!.env.example
+node_modules
+dist
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Backend build artifacts
+backend/dist
+backend/node_modules
+backend/src/**/*.js
+backend/src/**/*.js.map
+backend/src/**/*.d.ts
+backend/src/**/*.d.ts.map
+backend/*.js
+backend/*.js.map
+backend/*.d.ts
+backend/*.d.ts.map
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
