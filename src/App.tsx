@@ -12,6 +12,7 @@ import Inbox from './pages/dashboard/Inbox';
 import Training from './pages/dashboard/Training';
 import Profile from './pages/dashboard/Profile';
 import Deploy from './pages/dashboard/Deploy';
+import CreativeStudio from './pages/dashboard/CreativeStudio';
 
 import { NotificationProvider } from './context/NotificationContext';
 
@@ -40,6 +41,7 @@ export default function App() {
               <Route path="training" element={<Training />} />
               <Route path="profile" element={<Profile />} />
               <Route path="deploy" element={<Deploy />} />
+              <Route path="creative" element={<CreativeStudio />} />
             </Route>
 
             {/* Fallback */}
