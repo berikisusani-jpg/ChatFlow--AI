@@ -1,4 +1,4 @@
-import { MessageSquare, Database, LogOut, Menu, X, Bell, Zap, Cpu, LayoutGrid, Settings } from 'lucide-react';
+import { MessageSquare, Database, LogOut, Menu, X, Bell, Zap, Cpu, LayoutGrid, Settings, Rocket } from 'lucide-react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/src/lib/utils';
 import { useState } from 'react';
@@ -9,6 +9,7 @@ const MENU_ITEMS = [
   { icon: MessageSquare, label: 'Inbox', href: '/dashboard/inbox' },
   { icon: Database, label: 'FAQ Training', href: '/dashboard/training' },
   { icon: Settings, label: 'Agent Profile', href: '/dashboard/profile' },
+  { icon: Rocket, label: 'Go Live', href: '/dashboard/deploy' },
 ];
 
 export default function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (o: boolean) => void }) {

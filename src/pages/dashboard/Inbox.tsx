@@ -81,8 +81,20 @@ export default function Inbox() {
   const [error, setError] = useState<string | null>(null);
   const [showProfile, setShowProfile] = useState(false); // Hidden by default on mobile
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [intelligence, setIntelligence] = useState<any>(null);
-  const [leadAnalysis, setLeadAnalysis] = useState<any>(null);
+
+  const [intelligenceMap, setIntelligenceMap] = useState<Record<number, any>>(() => {
+    const saved = localStorage.getItem('chatflow_intelligence');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  const [leadAnalysisMap, setLeadAnalysisMap] = useState<Record<number, any>>(() => {
+    const saved = localStorage.getItem('chatflow_lead_analysis');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  const intelligence = useMemo(() => selectedChat ? intelligenceMap[selectedChat.id] : null, [intelligenceMap, selectedChat]);
+  const leadAnalysis = useMemo(() => selectedChat ? leadAnalysisMap[selectedChat.id] : null, [leadAnalysisMap, selectedChat]);
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Responsive check
@@ -100,6 +112,14 @@ export default function Inbox() {
   useEffect(() => {
     localStorage.setItem('chatflow_messages', JSON.stringify(allMessages));
   }, [allMessages]);
+
+  useEffect(() => {
+    localStorage.setItem('chatflow_intelligence', JSON.stringify(intelligenceMap));
+  }, [intelligenceMap]);
+
+  useEffect(() => {
+    localStorage.setItem('chatflow_lead_analysis', JSON.stringify(leadAnalysisMap));
+  }, [leadAnalysisMap]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -191,9 +211,11 @@ export default function Inbox() {
         }));
 
         generateSuggestions(aiResponse).then(setSuggestions);
-        generateConversationSummary(history).then(setIntelligence);
+        generateConversationSummary(history).then(data => {
+            setIntelligenceMap(prev => ({ ...prev, [selectedChat.id]: data }));
+        });
         analyzeLeadPotential(history).then(analysis => {
-          setLeadAnalysis(analysis);
+          setLeadAnalysisMap(prev => ({ ...prev, [selectedChat.id]: analysis }));
           if (analysis.intent === 'Hot' && analysis.score > 80) {
             addNotification('lead', 'High Potential Lead', `${selectedChat.name} shows strong buying intent!`);
           }
