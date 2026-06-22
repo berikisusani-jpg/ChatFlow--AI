@@ -1,85 +1,219 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  OWNER
+  ADMIN
+  MANAGER
+  AGENT
+  MEMBER
+  VIEWER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+}
+
+enum PlanTier {
+  FREE
+  STARTER
+  PRO
+  BUSINESS
+  ENTERPRISE
+}
+
+enum ChannelType {
+  WHATSAPP
+  TELEGRAM
+  INSTAGRAM
+  FACEBOOK
+  WEB_WIDGET
+  EMAIL
+  SMS
 }
 
 model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  password      String
-  name          String?
-  role          String   @default("user")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  organization  Organization? @relation(fields: [organizationId], references: [id])
+  id             String         @id @default(cuid())
+  email          String         @unique
+  password       String
+  name           String?
+  role           UserRole       @default(MEMBER)
+  status         UserStatus     @default(PENDING_VERIFICATION)
+  emailVerified  DateTime?
+  avatarUrl      String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  organization   Organization?  @relation(fields: [organizationId], references: [id])
   organizationId String?
+  refreshTokens  RefreshToken[]
+  auditLogs      AuditLog[]
+  apiKeys        ApiKey[]
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  replacedBy String?
+  createdAt DateTime @default(now())
 }
 
 model Organization {
-  id        String   @id @default(cuid())
-  name      String
-  users     User[]
-  agents    Agent[]
+  id           String        @id @default(cuid())
+  name         String
+  slug         String        @unique
+  settings     Json?         @default("{}")
+  users        User[]
+  invites      Invite[]
+  agents       Agent[]
   subscription Subscription?
+  auditLogs    AuditLog[]
+  usageMetrics UsageMetric[]
+  apiKeys      ApiKey[]
+}
+
+model Invite {
+  id             String       @id @default(cuid())
+  email          String
+  role           UserRole     @default(MEMBER)
+  token          String       @unique
+  expiresAt      DateTime
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
 }
 
 model Agent {
-  id              String   @id @default(cuid())
-  name            String
-  instructions    String
-  personality     String
-  temperature     Float    @default(0.7)
-  organization    Organization @relation(fields: [organizationId], references: [id])
-  organizationId  String
-  knowledgeBase   KnowledgeBase[]
-  conversations   Conversation[]
+  id             String          @id @default(cuid())
+  name           String
+  instructions   String          @db.Text
+  personality    String          @db.Text
+  temperature    Float           @default(0.7)
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  knowledgeBase  KnowledgeBase[]
+  conversations  Conversation[]
+  status         String          @default("ACTIVE")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model KnowledgeBase {
-  id        String   @id @default(cuid())
-  fileName  String
-  fileType  String
-  content   String? // Store chunked content or reference to vector store
-  agent     Agent    @relation(fields: [agentId], references: [id])
-  agentId   String
+  id             String       @id @default(cuid())
+  fileName       String
+  fileType       String
+  content        String?      @db.Text
+  category       String?
+  tags           String[]
+  metadata       Json?        @default("{}")
+  version        Int          @default(1)
+  agent          Agent        @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  agentId        String
+  documents      DocumentChunk[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model DocumentChunk {
+  id              String         @id @default(cuid())
+  content         String         @db.Text
+  metadata        Json?
+  embedding       Unsupported("vector(1536)")?
+  knowledgeBaseId String
+  knowledgeBase   KnowledgeBase @relation(fields: [knowledgeBaseId], references: [id], onDelete: Cascade)
 }
 
 model Conversation {
-  id            String   @id @default(cuid())
-  externalId    String?  // WhatsApp ID
-  status        String   @default("active")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  agent         Agent    @relation(fields: [agentId], references: [id])
-  agentId       String
-  messages      Message[]
+  id             String       @id @default(cuid())
+  externalId     String?      // Provider ID
+  channel        ChannelType  @default(WEB_WIDGET)
+  status         String       @default("ACTIVE")
+  metadata       Json?        @default("{}")
+  agent          Agent        @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  agentId        String
+  messages       Message[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model Message {
-  id              String   @id @default(cuid())
-  role            String   // user or model
-  text            String
-  createdAt       DateTime @default(now())
-  conversation    Conversation @relation(fields: [conversationId], references: [id])
-  conversationId  String
+  id             String       @id @default(cuid())
+  role           String       // user or model
+  text           String       @db.Text
+  metadata       Json?        @default("{}")
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+  tokenCount     Int?
+  createdAt      DateTime     @default(now())
 }
 
 model Subscription {
-  id              String   @id @default(cuid())
-  plan            String   @default("free") // free, starter, pro, enterprise
-  stripeId        String?
-  status          String   @default("active")
-  organization    Organization @relation(fields: [organizationId], references: [id])
-  organizationId  String   @unique
+  id             String       @id @default(cuid())
+  plan           PlanTier     @default(FREE)
+  stripeId       String?      @unique
+  status         String       @default("ACTIVE")
+  organizationId String       @unique
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  currentPeriodEnd DateTime?
+  cancelAtPeriodEnd Boolean   @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model UsageMetric {
+  id             String       @id @default(cuid())
+  type           String       // messages, documents, storage, tokens
+  value          Float
+  date           DateTime     @default(now())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id             String       @id @default(cuid())
+  action         String
+  result         String
+  metadata       Json?        @default("{}")
+  userId         String?
+  user           User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  ip             String?
+  userAgent      String?
+  createdAt      DateTime     @default(now())
+}
+
+model ApiKey {
+  id             String       @id @default(cuid())
+  name           String
+  key            String       @unique
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastUsed       DateTime?
+  expiresAt      DateTime?
+  createdAt      DateTime     @default(now())
 }
 
 model Analytics {
   id        String   @id @default(cuid())
-  type      String   // conversation, message, lead
+  type      String   // conversation, message, lead, task_success
   value     Float
   metadata  Json?
   createdAt DateTime @default(now())

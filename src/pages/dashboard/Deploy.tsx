@@ -1,138 +1,106 @@
-import { Rocket, ShieldCheck, Copy, CheckCircle2, Terminal, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { Rocket, MessageCircle, Send, Code, Globe, Shield, CheckCircle2, Copy } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+
+const CHANNELS = [
+  { id: 'whatsapp', name: 'WhatsApp', icon: MessageCircle, color: 'text-green-500', status: 'Enterprise' },
+  { id: 'web', name: 'Web Widget', icon: Globe, iconColor: 'text-blue-500', status: 'Ready' },
+  { id: 'api', name: 'Public API', icon: Code, color: 'text-brand-primary', status: 'Developer' },
+];
 
 export default function Deploy() {
-  const [copied, setCopied] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
-  const config = {
-    webhookUrl: 'https://api.chatflow.ai/webhooks/whatsapp/v1/7x92k1',
-    apiToken: 'cf_live_92k1_02xm83l91pz0x',
-    verifyToken: 'chatflow_secure_handshake'
-  };
-
-  const handleCopy = (text: string, key: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(key);
-    setTimeout(() => setCopied(null), 2000);
-  };
+  const snippet = `<script
+  src="https://cdn.chatflow.ai/widget.js"
+  data-agent-id="YOUR_AGENT_ID"
+  async
+></script>`;
 
   return (
-    <div className="max-w-5xl mx-auto space-y-12 pb-20">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-brand-primary">
-            <Rocket className="w-5 h-5 text-brand-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Deployment Center</span>
-          </div>
-          <h1 className="text-4xl font-display font-medium tracking-tight text-white italic">Go Live</h1>
-          <p className="text-white/40 max-w-lg leading-relaxed font-medium">
-            Connect your trained AI agent to WhatsApp and start automating your customer support in real-time.
-          </p>
+    <div className="max-w-5xl mx-auto space-y-12">
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 text-brand-primary">
+          <Rocket className="w-5 h-5" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em]">Deployment Studio</span>
         </div>
-
-        <div className="px-6 py-3 rounded-2xl bg-brand-primary/10 border border-brand-primary/20 flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-brand-primary animate-pulse" />
-            <span className="text-[10px] font-black text-brand-primary uppercase tracking-widest">Environment: Production</span>
-        </div>
+        <h1 className="text-4xl font-display font-medium text-white italic">Go Live</h1>
+        <p className="text-white/40 max-w-lg">
+          Deploy your trained agents across multiple channels with enterprise-grade security and scale.
+        </p>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-7 space-y-8">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-8 rounded-[2.5rem] bg-white/[0.01] border border-white/5 space-y-8"
-            >
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center">
-                        <Terminal className="w-6 h-6 text-white/40" />
-                    </div>
-                    <div>
-                        <h3 className="text-xl font-bold text-white">API Configuration</h3>
-                        <p className="text-xs text-white/20 font-medium">Use these credentials to bridge your WhatsApp Business API.</p>
-                    </div>
-                </div>
+      <div className="grid md:grid-cols-3 gap-6">
+        {CHANNELS.map((channel) => (
+          <div key={channel.id} className="glass-panel p-8 space-y-6 group hover:border-brand-primary/20 transition-all">
+            <div className="flex justify-between items-start">
+              <div className={`p-4 rounded-2xl bg-white/5 ${channel.color || ''}`}>
+                <channel.icon className="w-8 h-8" />
+              </div>
+              <span className="text-[10px] font-black uppercase px-2 py-1 rounded bg-white/5 text-white/40">
+                {channel.status}
+              </span>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold">{channel.name}</h3>
+              <p className="text-xs text-white/40 mt-2">Connect your agent to {channel.name} instantly.</p>
+            </div>
+            <button className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-bold hover:bg-white/10 transition-all">
+              Configure
+            </button>
+          </div>
+        ))}
+      </div>
 
-                <div className="space-y-6">
-                    {[
-                        { label: 'Webhook URL', value: config.webhookUrl, key: 'webhook' },
-                        { label: 'API Token', value: config.apiToken, key: 'token' },
-                        { label: 'Verify Token', value: config.verifyToken, key: 'verify' }
-                    ].map((item) => (
-                        <div key={item.key} className="space-y-2">
-                            <label className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] ml-1">{item.label}</label>
-                            <div className="flex gap-2">
-                                <div className="flex-1 bg-white/[0.02] border border-white/5 rounded-xl px-4 py-3 text-xs font-mono text-white/60 truncate">
-                                    {item.value}
-                                </div>
-                                <button
-                                    onClick={() => handleCopy(item.value, item.key)}
-                                    className="px-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all flex items-center justify-center text-white/40 hover:text-white"
-                                >
-                                    {copied === item.key ? <CheckCircle2 className="w-4 h-4 text-brand-primary" /> : <Copy className="w-4 h-4" />}
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="p-8 rounded-[2.5rem] bg-brand-primary/[0.02] border border-brand-primary/10 relative overflow-hidden"
-            >
-                <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
-                    <ShieldCheck className="w-32 h-32 text-brand-primary" />
-                </div>
-
-                <h3 className="text-lg font-bold text-white mb-4">Security Handshake</h3>
-                <p className="text-sm text-white/40 leading-relaxed font-medium mb-6">
-                    ChatFlow AI uses an encrypted WSS (WebSocket Secure) protocol to ensure all customer data is processed within your private instance.
-                </p>
-                <button className="flex items-center gap-2 text-[10px] font-black text-brand-primary uppercase tracking-widest hover:underline">
-                    View Security Protocol <ExternalLink className="w-3 h-3" />
-                </button>
-            </motion.div>
+      <div className="glass-panel p-10 space-y-8">
+        <div className="flex items-center gap-4">
+           <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+              <Code className="w-6 h-6" />
+           </div>
+           <div>
+              <h2 className="text-2xl font-bold italic">Web Integration</h2>
+              <p className="text-sm text-white/40">Add the ChatFlow widget to your website with a single line of code.</p>
+           </div>
         </div>
 
-        <div className="lg:col-span-5">
-            <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-                className="p-10 rounded-[3rem] bg-white/[0.01] border border-white/5 space-y-10"
-            >
-                <div>
-                    <h3 className="text-xl font-bold text-white mb-2">Integration Guide</h3>
-                    <p className="text-xs text-white/20 font-medium italic leading-relaxed">Follow these steps to synchronize your agent.</p>
-                </div>
+        <div className="bg-bg-dark rounded-2xl border border-white/5 overflow-hidden">
+           <div className="px-6 py-3 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
+              <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">Installation Snippet</span>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(snippet);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                className="text-white/40 hover:text-white transition-colors"
+              >
+                {copied ? <CheckCircle2 className="w-4 h-4 text-brand-primary" /> : <Copy className="w-4 h-4" />}
+              </button>
+           </div>
+           <pre className="p-6 text-sm text-brand-primary font-mono overflow-x-auto">
+             {snippet}
+           </pre>
+        </div>
 
-                <div className="space-y-8">
-                    {[
-                        { step: '01', title: 'Meta Developer Portal', desc: 'Create a WhatsApp Business App in your Meta Developer account.' },
-                        { step: '02', title: 'Configure Webhooks', desc: 'Paste the Webhook URL and Verify Token into the WhatsApp settings.' },
-                        { step: '03', title: 'Authorize Agent', desc: 'Add your ChatFlow API Token to the Authorization header of your outbound calls.' },
-                        { step: '04', title: 'Production Pulse', desc: 'The system will automatically detect the first incoming message and go live.' },
-                    ].map((item, i) => (
-                        <div key={i} className="flex gap-6">
-                            <div className="text-2xl font-display font-black text-brand-primary opacity-20 italic shrink-0 leading-none">{item.step}</div>
-                            <div className="space-y-1.5">
-                                <h4 className="text-sm font-bold text-white tracking-tight leading-none">{item.title}</h4>
-                                <p className="text-xs text-white/40 leading-relaxed font-medium">{item.desc}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="pt-4">
-                    <button className="w-full py-4 rounded-2xl bg-white text-bg-dark font-black text-[11px] uppercase tracking-[0.2em] shadow-huge hover:scale-[1.02] active:scale-[0.98] transition-all">
-                        Validate Connection
-                    </button>
-                </div>
-            </motion.div>
+        <div className="grid md:grid-cols-2 gap-8 pt-4">
+           <div className="space-y-4">
+              <div className="flex items-center gap-2 text-white/60">
+                 <Shield className="w-4 h-4" />
+                 <span className="text-xs font-bold uppercase tracking-widest">Security</span>
+              </div>
+              <p className="text-xs text-white/40 leading-relaxed">
+                Whitelisted domains, CSRF protection, and JWT verification for all client-side interactions.
+              </p>
+           </div>
+           <div className="space-y-4">
+              <div className="flex items-center gap-2 text-white/60">
+                 <CheckCircle2 className="w-4 h-4" />
+                 <span className="text-xs font-bold uppercase tracking-widest">Analytics</span>
+              </div>
+              <p className="text-xs text-white/40 leading-relaxed">
+                Real-time event tracking for impressions, clicks, and conversion rates directly in your dashboard.
+              </p>
+           </div>
         </div>
       </div>
     </div>

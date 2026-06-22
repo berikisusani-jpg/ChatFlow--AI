@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   user: any;
-  token: string | null;
-  login: (userData: any, token: string) => void;
+  login: (userData: any, accessToken: string, refreshToken: string) => void;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -13,7 +12,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('chatflow_token'));
+  const [token, setToken] = useState<string | null>(localStorage.getItem('chatflow_access_token'));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,10 +20,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
 
-  const login = (userData: any, token: string) => {
+  const login = (userData: any, accessToken: string, refreshToken: string) => {
     setUser(userData);
-    setToken(token);
-    localStorage.setItem('chatflow_token', token);
+    setToken(accessToken);
+    localStorage.setItem('chatflow_access_token', accessToken);
+    localStorage.setItem('chatflow_refresh_token', refreshToken);
     localStorage.setItem('chatflow_user', JSON.stringify(userData));
     navigate('/dashboard');
   };
@@ -32,13 +32,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('chatflow_token');
+    localStorage.removeItem('chatflow_access_token');
+    localStorage.removeItem('chatflow_refresh_token');
     localStorage.removeItem('chatflow_user');
     navigate('/login');
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!token }}>
       {children}
     </AuthContext.Provider>
   );

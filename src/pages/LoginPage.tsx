@@ -15,7 +15,7 @@ export default function LoginPage() {
     try {
       const endpoint = isSignup ? '/auth/signup' : '/auth/login';
       const res = await api.post(endpoint, { email, password, name: email.split('@')[0] });
-      login(res.data.user, res.data.token);
+      login(res.data.user, res.data.accessToken, res.data.refreshToken);
     } catch (err) {
       alert('Authentication failed');
     }

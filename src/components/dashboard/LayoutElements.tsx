@@ -1,4 +1,4 @@
-import { MessageSquare, Database, LogOut, Menu, X, Bell, Zap, Cpu, LayoutGrid, Settings, Rocket, Sparkles } from 'lucide-react';
+import { MessageSquare, Database, LogOut, Menu, X, Bell, Zap, Cpu, LayoutGrid, Settings, Rocket, Sparkles, Users, CreditCard, BarChart3, ShieldCheck } from 'lucide-react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/src/lib/utils';
 import { useState } from 'react';
@@ -7,9 +7,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 const MENU_ITEMS = [
   { icon: LayoutGrid, label: 'Overview', href: '/dashboard/overview' },
   { icon: MessageSquare, label: 'Inbox', href: '/dashboard/inbox' },
-  { icon: Database, label: 'FAQ Training', href: '/dashboard/training' },
+  { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
+  { icon: Database, label: 'Knowledge Base', href: '/dashboard/training' },
   { icon: Settings, label: 'Agent Profile', href: '/dashboard/profile' },
   { icon: Sparkles, label: 'Creative Studio', href: '/dashboard/creative' },
+  { icon: Users, label: 'Team', href: '/dashboard/team' },
+  { icon: ShieldCheck, label: 'Audit Logs', href: '/dashboard/logs' },
+  { icon: CreditCard, label: 'Billing', href: '/dashboard/billing' },
   { icon: Rocket, label: 'Go Live', href: '/dashboard/deploy' },
 ];
 
@@ -30,7 +34,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean, setIsO
         </button>
       </div>
 
-      <nav className="flex-1 px-4 py-8 space-y-1">
+      <nav className="flex-1 px-4 py-8 space-y-1 overflow-y-auto custom-scrollbar">
         {MENU_ITEMS.map((item) => (
           <NavLink
             key={item.href}
@@ -63,12 +67,9 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean, setIsO
 
   return (
     <>
-      {/* Desktop Sidebar */}
       <div className="hidden lg:block h-full">
         {sidebarContent}
       </div>
-
-      {/* Mobile Sidebar */}
       <AnimatePresence>
         {isOpen && (
           <>
