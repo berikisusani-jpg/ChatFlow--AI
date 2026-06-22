@@ -1,6 +1,6 @@
 import { Sparkles, Video, Image as ImageIcon, Megaphone, Send, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { generateCreativeAsset } from '../../services/glmService';
 
 export default function CreativeStudio() {

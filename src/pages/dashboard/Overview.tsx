@@ -1,6 +1,6 @@
 import LiveActivityFeed from '../../components/dashboard/LiveActivityFeed';
 import { LayoutGrid, Sparkles, Activity, Users, MessageSquare } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 export default function Overview() {
   const stats = [

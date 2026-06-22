@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Quote, Star, Sparkles } from 'lucide-react';
 
 const TESTIMONIALS = [

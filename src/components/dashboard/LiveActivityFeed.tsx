@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNotifications } from '@/src/context/NotificationContext';
 import { Sparkles, Flame, UserPlus, Activity, ShieldCheck, Clock } from 'lucide-react';
 import { cn } from '@/src/lib/utils';

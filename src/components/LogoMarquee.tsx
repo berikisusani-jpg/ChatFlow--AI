@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Apple, Github, Chrome, Twitter, Play, Zap, ShieldCheck, Activity } from 'lucide-react';
 
 const LOGOS = [

@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  name          String?
+  role          String   @default("user")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  organization  Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  users     User[]
+  agents    Agent[]
+  subscription Subscription?
+}
+
+model Agent {
+  id              String   @id @default(cuid())
+  name            String
+  instructions    String
+  personality     String
+  temperature     Float    @default(0.7)
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  knowledgeBase   KnowledgeBase[]
+  conversations   Conversation[]
+}
+
+model KnowledgeBase {
+  id        String   @id @default(cuid())
+  fileName  String
+  fileType  String
+  content   String? // Store chunked content or reference to vector store
+  agent     Agent    @relation(fields: [agentId], references: [id])
+  agentId   String
+}
+
+model Conversation {
+  id            String   @id @default(cuid())
+  externalId    String?  // WhatsApp ID
+  status        String   @default("active")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  agent         Agent    @relation(fields: [agentId], references: [id])
+  agentId       String
+  messages      Message[]
+}
+
+model Message {
+  id              String   @id @default(cuid())
+  role            String   // user or model
+  text            String
+  createdAt       DateTime @default(now())
+  conversation    Conversation @relation(fields: [conversationId], references: [id])
+  conversationId  String
+}
+
+model Subscription {
+  id              String   @id @default(cuid())
+  plan            String   @default("free") // free, starter, pro, enterprise
+  stripeId        String?
+  status          String   @default("active")
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String   @unique
+}
+
+model Analytics {
+  id        String   @id @default(cuid())
+  type      String   // conversation, message, lead
+  value     Float
+  metadata  Json?
+  createdAt DateTime @default(now())
+}

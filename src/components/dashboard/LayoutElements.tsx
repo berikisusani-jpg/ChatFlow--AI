@@ -2,7 +2,7 @@ import { MessageSquare, Database, LogOut, Menu, X, Bell, Zap, Cpu, LayoutGrid, S
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/src/lib/utils';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const MENU_ITEMS = [
   { icon: LayoutGrid, label: 'Overview', href: '/dashboard/overview' },

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Save, Building2, Clock, Truck, Phone, MessageCircle, ListChecks, Info, Sparkles, CheckCircle2, Bot, Shield, Heart, Target, Zap, LayoutGrid, Check } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/src/lib/utils';
 import { BUSINESS_DEMOS } from '@/src/constants/demoData';
 

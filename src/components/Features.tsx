@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { MessageSquare, Database, Users } from 'lucide-react';
 
 const FEATURES = [

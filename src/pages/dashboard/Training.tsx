@@ -1,6 +1,6 @@
 import FAQPanel from '../../components/dashboard/FAQPanel';
 import { Database, Plus } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Training() {
   return (

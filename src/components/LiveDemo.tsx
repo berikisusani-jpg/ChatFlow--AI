@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { MessageSquare, Sparkles } from 'lucide-react';
 
 export default function LiveDemo() {

@@ -1,5 +1,5 @@
 import { Rocket, ShieldCheck, Copy, CheckCircle2, Terminal, ExternalLink } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 export default function Deploy() {

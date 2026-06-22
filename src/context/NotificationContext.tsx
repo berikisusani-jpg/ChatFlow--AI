@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Bell, Sparkles, UserPlus, Flame, MessageSquare, ShieldCheck, X, Activity } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 

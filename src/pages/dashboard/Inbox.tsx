@@ -2,7 +2,7 @@ import { Search, Send, Bot, Sparkles, User, Info, CheckCheck, MoreVertical, X, P
 import { useState, useRef, useEffect, useMemo, FormEvent } from 'react';
 import { cn } from '@/src/lib/utils';
 import { generateAIResponse, generateSuggestions, generateConversationSummary, analyzeLeadPotential } from '@/src/services/geminiService';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNotifications } from '@/src/context/NotificationContext';
 
 interface Message {

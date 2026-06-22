@@ -1,6 +1,6 @@
 import BusinessProfileForm from '../../components/dashboard/BusinessProfile';
 import { Settings } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 export default function Profile() {
   return (
