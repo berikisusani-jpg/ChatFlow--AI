@@ -1,25 +1,10 @@
 node_modules
 dist
+build
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Backend build artifacts
-backend/dist
-backend/node_modules
-backend/src/**/*.js
-backend/src/**/*.js.map
-backend/src/**/*.d.ts
-backend/src/**/*.d.ts.map
-backend/*.js
-backend/*.js.map
-backend/*.d.ts
-backend/*.d.ts.map
-
-# Playwright
+*.log
+verification/
 test-results/
 playwright-report/
 blob-report/
-playwright/.cache/
+playwright/.cache
