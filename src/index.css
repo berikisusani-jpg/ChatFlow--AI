@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #00FF9C;
+  --color-bg-dark: #0A0A0A;
+  --color-surface: #141414;
+  --color-border: rgba(255, 255, 255, 0.05);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-dark text-white font-body antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/[0.02] border border-white/5 backdrop-blur-xl rounded-2xl;
+  }
+
+  .cyber-button {
+    @apply relative overflow-hidden px-6 py-3 rounded-xl font-medium transition-all
+           bg-brand-primary text-bg-dark hover:scale-[1.02] active:scale-[0.98]
+           shadow-[0_0_20px_rgba(0,255,156,0.2)];
+  }
+}
